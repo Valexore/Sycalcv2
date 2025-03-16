@@ -1,4 +1,4 @@
-﻿Public Class Form1
+Public Class Form1
     ' Declare variables for arithmetic operations
     Dim first_number As Double
     Dim second_number As Double
@@ -49,10 +49,7 @@
     Private Sub Arithmetic_Click(sender As Object, e As EventArgs) Handles btnAdd.Click, btnMinus.Click, btnMult.Click, btndiv.Click, btnMod.Click, btnExp.Click
         Try
             Dim ops As Button = sender
-            first_number = Double.Parse(output.Text)
-            Arithop = ops.Text
-            history.Text = output.Text & " " & Arithop
-            output.Text = "0"
+            output.Text += " " & ops.Text & " "
         Catch ex As Exception
             output.Text = "Error: Invalid operation"
             history.Text = "Error: Invalid operation"
@@ -62,35 +59,17 @@
     ' Event handler for the equals button (=)
     Private Sub equal_Click(sender As Object, e As EventArgs) Handles equal.Click
         Try
-            second_number = Double.Parse(output.Text)
-            Select Case Arithop
-                Case "+"
-                    result = first_number + second_number
-                Case "-"
-                    result = first_number - second_number
-                Case "*"
-                    result = first_number * second_number
-                Case "/"
-                    If second_number = 0 Then
-                        output.Text = "Error: Division by zero"
-                        history.Text = "Error: Division by zero"
-                        Return
-                    Else
-                        result = first_number / second_number
-                    End If
-                Case "Mod"
-                    result = first_number Mod second_number
-                Case "Exp"
-                    result = first_number ^ second_number
-            End Select
+            Dim expression As String = output.Text
+            Dim result As Object = New DataTable().Compute(expression, Nothing)
+
             output.Text = result.ToString()
-            history.Text = history.Text & " " & second_number & " = " & result.ToString()
+            history.Text = expression & " = " & result.ToString()
 
             ' Add the solved problem to the past TextBox
             past.AppendText(history.Text & Environment.NewLine)
         Catch ex As Exception
-            output.Text = "Error: Calculation failed"
-            history.Text = "Error: Calculation failed"
+            output.Text = "Error: Invalid expression"
+            history.Text = "Error: Invalid expression"
         End Try
     End Sub
 
@@ -99,7 +78,7 @@
         Try
             Dim input As Double = Double.Parse(output.Text)
             If input >= 0 Then
-                result = Math.Sqrt(input)
+                Dim result As Double = Math.Sqrt(input)
                 output.Text = result.ToString()
                 history.Text = "√(" & input & ") = " & result.ToString()
                 past.AppendText(history.Text & Environment.NewLine)
@@ -119,7 +98,7 @@
             Dim input As Integer = Integer.Parse(output.Text)
             If input >= 0 Then
                 Try
-                    result = CalculateFactorial(input)
+                    Dim result As Long = CalculateFactorial(input)
                     output.Text = result.ToString()
                     history.Text = input & "! = " & result.ToString()
                     past.AppendText(history.Text & Environment.NewLine)
@@ -191,7 +170,7 @@
     Private Sub abs_Click(sender As Object, e As EventArgs) Handles abs.Click
         Try
             Dim input As Double = Double.Parse(output.Text)
-            result = Math.Abs(input)
+            Dim result As Double = Math.Abs(input)
             output.Text = result.ToString()
             history.Text = "|" & input & "| = " & result.ToString()
             past.AppendText(history.Text & Environment.NewLine)
@@ -209,7 +188,7 @@
                 output.Text = "Error: Division by zero"
                 history.Text = "Error: Division by zero"
             Else
-                result = 1 / input
+                Dim result As Double = 1 / input
                 output.Text = result.ToString()
                 history.Text = "1/" & input & " = " & result.ToString()
                 past.AppendText(history.Text & Environment.NewLine)
@@ -224,7 +203,7 @@
     Private Sub btnsquare_Click(sender As Object, e As EventArgs) Handles btnsquare.Click
         Try
             Dim input As Double = Double.Parse(output.Text)
-            result = input * input
+            Dim result As Double = input * input
             output.Text = result.ToString()
             history.Text = input & "² = " & result.ToString()
             past.AppendText(history.Text & Environment.NewLine)
@@ -237,10 +216,10 @@
     ' Event handler for the cube button
     Private Sub btnCube_Click(sender As Object, e As EventArgs) Handles btnCube.Click
         Try
-            Dim input = Double.Parse(output.Text)
-            result = input * input * input
-            output.Text = result.ToString
-            history.Text = input & "³ = " & result.ToString
+            Dim input As Double = Double.Parse(output.Text)
+            Dim result As Double = input * input * input
+            output.Text = result.ToString()
+            history.Text = input & "³ = " & result.ToString()
             past.AppendText(history.Text & Environment.NewLine)
         Catch ex As Exception
             output.Text = "Error: Cube calculation failed"
@@ -252,7 +231,7 @@
     Private Sub btnCubeRoot_Click(sender As Object, e As EventArgs) Handles btnCubeRoot.Click
         Try
             Dim input As Double = Double.Parse(output.Text)
-            result = Math.Pow(input, 1.0 / 3.0)
+            Dim result As Double = Math.Pow(input, 1.0 / 3.0)
             output.Text = result.ToString()
             history.Text = "∛(" & input & ") = " & result.ToString()
             past.AppendText(history.Text & Environment.NewLine)
@@ -267,7 +246,7 @@
         Try
             Dim input As Double = Double.Parse(output.Text)
             If input > 0 Then
-                result = Math.Log(input)
+                Dim result As Double = Math.Log(input)
                 output.Text = result.ToString()
                 history.Text = "ln(" & input & ") = " & result.ToString()
                 past.AppendText(history.Text & Environment.NewLine)
@@ -286,7 +265,7 @@
         Try
             Dim input As Double = Double.Parse(output.Text)
             If input > 0 Then
-                result = Math.Log10(input)
+                Dim result As Double = Math.Log10(input)
                 output.Text = result.ToString()
                 history.Text = "log10(" & input & ") = " & result.ToString()
                 past.AppendText(history.Text & Environment.NewLine)
@@ -309,6 +288,4 @@
             history.Text = "Error: Clear history failed"
         End Try
     End Sub
-
-
 End Class
